@@ -26,16 +26,15 @@ class ZlibDecodeFilterTest < Test::Unit::TestCase
     assert_equal ['field1', 'field2'], d.instance.fields
   end
 
-  # TODO : Change to test zlib based field
   test 'decode' do
     es = emit(CONFIG, {
-                'field1' => "T0s=",
-                'field3' => "T0s="
+                'field1' => "x\x9C\xCBH\xCD\xC9\xC9\a\x00\x06,\x02\x15",
+                'field3' => "x\x9C\xCBH\xCD\xC9\xC9\a\x00\x06,\x02\x15"
               })
 
     es.each { |time, record|
-      assert_equal 'OK', record['field1']
-      assert_equal 'T0s=', record['field3']
+      assert_equal 'hello', record['field1']
+      assert_equal 'x\x9C\xCBH\xCD\xC9\xC9\a\x00\x06,\x02\x15', record['field3']
       assert_equal false, record.has_key?('field2')
     }
   end

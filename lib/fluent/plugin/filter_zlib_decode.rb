@@ -1,6 +1,5 @@
 # encoding: utf-8
-# TODO: find zlib
-require 'base64'
+require 'zlib'
 
 require 'fluent/plugin/filter'
 
@@ -20,8 +19,7 @@ module Fluent
 
     def filter(tag, time, record)
       @fields.each { |key|
-        # TODO: Change to zlib
-        record[key] = Base64.decode64(record[key]) if record.has_key? key
+        record[key] = Zlib::Inflate.inflate(record[key]) if record.has_key? key
       }
       record
     end

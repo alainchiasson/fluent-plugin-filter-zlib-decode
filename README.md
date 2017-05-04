@@ -19,7 +19,7 @@ Decode base64 encoded fields
 </source>
 
 <filter example>
-  @type base64_decode
+  @type zlib_decode
   fields message
 </filter>
 
