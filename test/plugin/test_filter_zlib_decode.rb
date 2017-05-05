@@ -27,14 +27,15 @@ class ZlibDecodeFilterTest < Test::Unit::TestCase
   end
 
   test 'decode' do
+    test_value=Zlib::Deflate.deflate("hello")
     es = emit(CONFIG, {
-                'field1' => "x\x9C\xCBH\xCD\xC9\xC9\a\x00\x06,\x02\x15",
-                'field3' => "x\x9C\xCBH\xCD\xC9\xC9\a\x00\x06,\x02\x15"
+                'field1' => test_value,
+                'field3' => test_value
               })
 
     es.each { |time, record|
       assert_equal 'hello', record['field1']
-      assert_equal 'x\x9C\xCBH\xCD\xC9\xC9\a\x00\x06,\x02\x15', record['field3']
+      assert_equal test_value, record['field3']
       assert_equal false, record.has_key?('field2')
     }
   end
